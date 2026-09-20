@@ -177,6 +177,21 @@ tr.mg-lo td{background:#fee2e2}
         <button class="chip" id="f-bau-hi" onclick="setFilter('bau','hi',this)">&gt;30%</button>
       </div>
     </div>
+
+    <!-- Paste many article codes at once -->
+    <div style="margin-bottom:8px">
+      <button type="button" onclick="togglePasteBox()" style="padding:5px 12px;background:#fff;border:1.5px solid #0d9488;color:#0d9488;border-radius:8px;font-size:11px;font-weight:700">&#128203; วางรหัสสินค้าหลายรหัส (เลือกทีเดียว)</button>
+      <div id="pasteBox" style="display:none;margin-top:8px;padding:10px;background:#f0fdfa;border:1.5px solid #99f6e4;border-radius:8px">
+        <textarea id="pasteCodes" rows="4" style="width:100%;font-family:monospace;font-size:12px;resize:vertical" placeholder="วางรหัส Article ได้หลายรหัส คั่นด้วยเว้นวรรค / ขึ้นบรรทัดใหม่ / คอมมา หรือวางข้อความทั้งก้อนก็ได้ — ระบบจะเลือกเฉพาะรหัสที่มีในแคตตาล็อก" oninput="previewPastedCodes()"></textarea>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px">
+          <button type="button" onclick="applyPastedCodes()" style="padding:6px 14px;background:#0d9488;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700">&#10003; เลือกสินค้าตามรหัสที่วาง</button>
+          <button type="button" onclick="document.getElementById('pasteCodes').value='';previewPastedCodes();document.getElementById('pasteResult').innerHTML=''" style="padding:6px 12px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;color:#64748b">ล้างช่อง</button>
+          <span id="pastePreview" style="font-size:11px;color:#0d9488;font-weight:600"></span>
+        </div>
+        <div id="pasteResult" style="font-size:11px;line-height:1.7;margin-top:6px"></div>
+      </div>
+    </div>
+
     <div style="display:flex;gap:12px;font-size:10px;color:#64748b;margin-bottom:6px">
       <span><span style="display:inline-block;width:10px;height:10px;background:#dcfce7;border-radius:2px;margin-right:3px;vertical-align:middle"></span>Margin &ge; 50%</span>
       <span><span style="display:inline-block;width:10px;height:10px;background:#fef9c3;border-radius:2px;margin-right:3px;vertical-align:middle"></span>Margin 20-50%</span>
@@ -616,6 +631,62 @@ function clearSel(){
   updateCounts();
   render();
   calcResults();
+}
+
+// ── Paste many article codes → select them all at once ──
+function togglePasteBox(){
+  var box = document.getElementById('pasteBox');
+  box.style.display = box.style.display==='none' ? 'block' : 'none';
+  if(box.style.display==='block') document.getElementById('pasteCodes').focus();
+}
+
+// Tokens that look like an article code (letters+digits, 8+ chars) but aren't in the catalog
+function findUnknownCodeLikeTokens(text){
+  var seen = {}, out = [];
+  text.toUpperCase().split(/[^A-Z0-9]+/).forEach(function(tok){
+    if(tok.length>=8 && /[0-9]/.test(tok) && /[A-Z]/.test(tok) && !PRODUCTS_BY_ARTICLE[tok] && !seen[tok]){ seen[tok]=1; out.push(tok); }
+  });
+  return out;
+}
+
+function previewPastedCodes(){
+  var text = document.getElementById('pasteCodes').value||'';
+  var el = document.getElementById('pastePreview');
+  if(!text.trim()){ el.textContent=''; return; }
+  var n = extractArticlesFromText(text).length;
+  el.textContent = n>0 ? 'ตรวจพบ '+n+' รหัสที่มีในแคตตาล็อก' : 'ยังไม่พบรหัสที่ตรงกับแคตตาล็อก';
+  el.style.color = n>0 ? '#0d9488' : '#d97706';
+}
+
+function applyPastedCodes(){
+  var text = document.getElementById('pasteCodes').value||'';
+  var out = document.getElementById('pasteResult');
+  var found = extractArticlesFromText(text);
+  var unknown = findUnknownCodeLikeTokens(text);
+  if(found.length===0){
+    out.innerHTML = '<span style="color:#d97706">⚠ ไม่พบรหัสสินค้าที่ตรงกับแคตตาล็อกในข้อความนี้</span>'+
+      (unknown.length? '<br><span style="color:#dc2626">ไม่พบในแคตตาล็อก ('+unknown.length+'): '+escapeHtml(unknown.join(', '))+'</span>' : '');
+    return;
+  }
+  var added=0, already=0, noPrice=[], addedKeys=[];
+  found.forEach(function(art){
+    var p = PRODUCTS_BY_ARTICLE[art];
+    if(basePrice(p)==null){ noPrice.push(p.article); return; }
+    if(sel.has(p.article)){ already++; }
+    else { sel.add(p.article); added++; addedKeys.push(p.article); }
+  });
+  updateCounts(); render(); calcResults();
+
+  var visible = {};
+  getFiltered().forEach(function(p){ visible[p.article]=1; });
+  var hidden = found.filter(function(art){ var p=PRODUCTS_BY_ARTICLE[art]; return sel.has(p.article) && !visible[p.article]; }).length;
+
+  var msg = '<span style="color:#16a34a">✅ เลือกเพิ่ม '+added+' รายการ</span>';
+  if(already>0) msg += ' · <span style="color:#64748b">เลือกไว้แล้ว '+already+'</span>';
+  if(hidden>0) msg += '<br><span style="color:#d97706">ℹ '+hidden+' รายการถูกซ่อนจากตารางด้วยตัวกรองปัจจุบัน (ยังถูกเลือกอยู่ — กด ALL ที่ตัวกรองเพื่อดู)</span>';
+  if(noPrice.length>0) msg += '<br><span style="color:#dc2626">ไม่มีราคาช่องทาง '+(channel==='online'?'Online':'Offline')+' จึงไม่ได้เลือก ('+noPrice.length+'): '+escapeHtml(noPrice.join(', '))+'</span>';
+  if(unknown.length>0) msg += '<br><span style="color:#dc2626">ไม่พบในแคตตาล็อก ('+unknown.length+'): '+escapeHtml(unknown.join(', '))+'</span>';
+  out.innerHTML = msg;
 }
 
 function updateCounts(){
