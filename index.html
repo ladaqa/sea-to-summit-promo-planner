@@ -70,6 +70,35 @@ tr.mg-lo td{background:#fee2e2}
 .file-input-wrap input[type=file]{position:absolute;left:0;top:0;opacity:0;width:100%;height:100%;cursor:pointer}
 .file-input-wrap .file-btn{padding:5px 12px;background:#0c2b2f;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer}
 /* Modal */
+.dt-set{padding:0;margin-bottom:16px;overflow:hidden}
+.dt-set-head{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#fde047;border-bottom:1px solid #ca8a04}
+.dt-title{font-weight:800;font-size:15px;background:transparent;border:1.5px solid transparent;border-radius:6px;padding:3px 6px;width:280px;color:#1e293b}
+.dt-title:hover,.dt-title:focus{border-color:#a16207;background:#fef9c3}
+.dt-scroll{overflow-x:auto}
+.dt-grid{width:100%;min-width:1180px;border-collapse:collapse;font-size:12px}
+.dt-grid th{background:#f8fafc;border:1px solid #cbd5e1;padding:6px 5px;text-align:center;font-weight:700;color:#1e293b;cursor:default;position:static;white-space:nowrap}
+.dt-grid th small{display:block;font-weight:500;color:#64748b;font-size:10px}
+.dt-grid td{border:1px solid #cbd5e1;padding:4px 6px;vertical-align:middle;background:#fff}
+.dt-grid td.n{text-align:right;white-space:nowrap}
+.dt-grid td.y{background:#fff59d}
+.dt-grid td.g{background:#e8f0e0;font-weight:700}
+.dt-grid td.o{background:#ffedd5;font-weight:700}
+.dt-grid tbody tr:hover td{background:#fff !important}
+.dt-grid tbody tr:hover td.y{background:#fff59d !important}
+.dt-grid tbody tr:hover td.g{background:#e8f0e0 !important}
+.dt-grid tbody tr:hover td.o{background:#ffedd5 !important}
+.dt-grid td.item{min-width:170px;max-width:220px}
+.dt-grid td.gift{background:#fdf2f8}
+.dt-grid .dt-pr{display:block;font-size:11px;color:#0f766e;font-weight:700}
+.dt-nsel{padding:3px 4px;border:1px solid #a16207;border-radius:6px;font-weight:700;background:#fef9c3}
+.dt-grid .dt-chosen{cursor:pointer;font-weight:600;color:#1e293b;white-space:normal;word-break:break-word}
+.dt-grid .dt-chosen:hover{text-decoration:underline}
+.dt-grid .dt-cost{display:block;font-size:10px;color:#64748b;font-weight:400}
+.dt-grid input.dt-search{width:100%;min-width:0}
+.dt-grid input.dt-val{width:66px}
+.dt-float{position:fixed;z-index:1200;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.2);max-height:260px;overflow-y:auto}
+.dt-float .dt-opt{padding:7px 10px;font-size:12px;cursor:pointer;border-bottom:1px solid #f1f5f9}
+.dt-float .dt-opt:hover{background:#f0fdfa}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center}
 .modal{background:#fff;border-radius:16px;padding:24px;width:520px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
 .modal-title{font-size:18px;font-weight:800;margin-bottom:16px;color:#1e293b}
@@ -87,6 +116,7 @@ tr.mg-lo td{background:#fee2e2}
   <nav style="padding:8px 0">
     <button id="nav-promo" class="nav-link active" onclick="showPage('promo')">🏷️ Promo Planner</button>
     <button id="nav-merch" class="nav-link" onclick="showPage('merch')">📦 Merchandise Planner</button>
+    <button id="nav-disc" class="nav-link" onclick="showPage('disc')">🧮 ตารางส่วนลด</button>
   </nav>
   <div id="sidebarPromoInfo" style="padding:14px 18px;margin-top:auto;border-top:1px solid #164e4a">
     <div style="color:#64748b;font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">ช่องทางราคา</div>
@@ -363,6 +393,43 @@ tr.mg-lo td{background:#fee2e2}
   </div>
   <div id="merchEmpty" class="card" style="text-align:center;color:#94a3b8;padding:30px">วางข้อความด้านบนเพื่อเริ่มตรวจสอบ Stock</div>
 </div><!-- /page-merch -->
+
+<!-- ════ PAGE: DISCOUNT TABLE ════ -->
+<div id="page-disc" style="display:none">
+  <div style="font-size:20px;font-weight:800;margin-bottom:2px">&#129518; ตารางส่วนลด</div>
+  <div style="color:#64748b;font-size:12px;margin-bottom:14px">1 แถว = 1 โปร &middot; กำหนดได้ว่าเซ็ทมีกี่ชิ้น (1-10, ตั้งที่หัว Set) &middot; เลือกสินค้าหลายรุ่นแล้ว <strong>ลดราคาเซ็ท</strong> และ/หรือ <strong>แถมของ</strong> ได้ &middot; เลือกช่องทาง <strong>Online / Offline</strong> เพื่อใช้ราคาป้ายให้ตรงช่องทาง &middot; ผลลัพธ์แสดงส่วนลดที่<strong>ลูกค้าได้</strong> (รวมส่วนลดเพิ่มเติม) และส่วนลดที่<strong>แบรนด์รับ</strong> (หลัง Fee)</div>
+
+  <div class="card" style="padding:12px 16px">
+    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-weight:700;color:#1e293b">ช่องทาง</span>
+        <button type="button" class="chip dt-ch on" data-ch="online" onclick="dtSetChannel('online')" title="ใช้ราคาป้าย Online Price">Online</button>
+        <button type="button" class="chip dt-ch" data-ch="offline" onclick="dtSetChannel('offline')" title="ใช้ราคาป้าย Price (หน้าร้าน)">Offline</button>
+        <select id="dtPlatform" style="padding:6px 8px" onchange="dtPlatformChange()">
+          <option>Shopee</option><option>Lazada</option><option>TikTok Shop</option>
+          <option>Central App</option><option>SEEK</option><option>อื่นๆ (ออนไลน์)</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-weight:700;color:#1e293b" title="ค่าธรรมเนียมที่ Platform / ศูนย์การค้าเรียกเก็บจากยอด net ที่ลูกค้าจ่าย">Fee</span>
+        <input id="dtFee" type="number" min="0" step="0.5" value="0" style="width:80px" oninput="dtSaveSettings();dtCalcAll()">
+        <button type="button" class="chip dt-unit on" data-for="fee" data-unit="pct" onclick="dtSetUnit('fee','pct')">%</button>
+        <button type="button" class="chip dt-unit" data-for="fee" data-unit="baht" onclick="dtSetUnit('fee','baht')">&#3647;</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-weight:700;color:#1e293b" title="ส่วนลด Voucher ที่ลูกค้าใช้ (แบรนด์รับภาระ) — หักก่อนคิด Fee">Voucher</span>
+        <input id="dtVoucher" type="number" min="0" step="1" value="0" style="width:80px" oninput="dtSaveSettings();dtCalcAll()">
+        <button type="button" class="chip dt-unit" data-for="voucher" data-unit="pct" onclick="dtSetUnit('voucher','pct')">%</button>
+        <button type="button" class="chip dt-unit on" data-for="voucher" data-unit="baht" onclick="dtSetUnit('voucher','baht')">&#3647;</button>
+      </div>
+      <span style="font-size:11px;color:#94a3b8">Fee / Voucher ใช้กับทุกแถว &middot; จำค่าล่าสุดแยกตามช่องทาง</span>
+    </div>
+  </div>
+
+  <div id="dtSets"></div>
+  <button onclick="dtAddSet()" style="padding:8px 16px;background:#fff;border:1.5px dashed #0d9488;color:#0d9488;border-radius:10px;font-size:13px;font-weight:700">+ เพิ่ม Set</button>
+  <div id="dtFloat" class="dt-float" style="display:none"></div>
+</div><!-- /page-disc -->
 </div><!-- /main -->
 
 <!-- ════ EXPORT MODAL ════ -->
@@ -2025,12 +2092,13 @@ function loadCatalog(inp){
 
 // ── Page switching (Promo Planner / Merchandise Planner) ──
 function showPage(name){
-  document.getElementById('page-promo').style.display = name==='promo' ? '' : 'none';
-  document.getElementById('page-merch').style.display = name==='merch' ? '' : 'none';
+  ['promo','merch','disc'].forEach(function(n){
+    document.getElementById('page-'+n).style.display = name===n ? '' : 'none';
+    document.getElementById('nav-'+n).classList.toggle('active', name===n);
+  });
   document.getElementById('sidebarPromoInfo').style.display = name==='promo' ? '' : 'none';
-  document.getElementById('nav-promo').classList.toggle('active', name==='promo');
-  document.getElementById('nav-merch').classList.toggle('active', name==='merch');
   if(name==='merch') runMerchCheck();
+  if(name==='disc') dtRender();
 }
 
 // ── Merchandise Planner: Stock lookup from pasted text ──
@@ -2280,10 +2348,306 @@ function copyMerchResults(){
   } else { fallbackCopy(text); done(); }
 }
 
+// ── Discount Table (ตารางส่วนลด) ─────────────────────────
+// One ROW = one deal, grouped in Sets (e.g. "Set 1 Towel"). Each Set decides how many items a deal has (n = 1..10).
+// Per row, with global Fee / Voucher:
+//   Total Price (retail) = Σ ราคาป้ายตามช่องทางที่เลือก (Online / Offline) ของสินค้าในเซ็ท
+//   ราคาขายเซ็ท = One Price ฿ | Total × (1 − Bundle %) | Total − ลด ฿ | Total (ไม่ลด — ใช้คู่กับของแถม)
+//   ของแถม (ไม่บังคับ) = สินค้าจาก Catalog: มูลค่า = ราคาป้ายตามช่องทาง, ต้นทุน = Cost
+//   มูลค่าที่ลูกค้าได้รับ V = Total + มูลค่าของแถม
+//   ส่วนลดเพิ่มเติม (Add On) = (Total − ราคาขายเซ็ท) + มูลค่าของแถม      Net (ลูกค้าจ่าย) = ราคาขายเซ็ท − Voucher
+//   ส่วนลดลูกค้า = (V − Net) / V     Fee = Fee% × Net (หรือ ฿)     แบรนด์ได้รับ = Net − Fee
+//   ส่วนลดที่แบรนด์รับ = (V − แบรนด์ได้รับ) / V     กำไร = แบรนด์ได้รับ − Cost สินค้า − Cost ของแถม
+var dtSets = [];
+var dtUnits = {fee:'pct', voucher:'baht'};
+var DT_KEY = 'sts_disc_settings', DT_SETS_KEY = 'sts_disc_sets';
+var DT_MAXN = 10;
+var DT_CH_KEY = 'sts_disc_channel';
+var dtChannel = 'online';                      // 'online' → Online Price, 'offline' → Price (ราคาป้ายหน้าร้าน)
+var DT_PLATFORMS = {
+  online:  ['Shopee','Lazada','TikTok Shop','Central App','SEEK','อื่นๆ (ออนไลน์)'],
+  offline: ['ห้าง / ศูนย์การค้า','หน้าร้านแบรนด์','อื่นๆ (ออฟไลน์)']
+};
+function dtPrice(p){ if(!p) return null; var v = dtChannel==='offline' ? p.price_offline : p.price_online; return (v==null || isNaN(v)) ? null : v; }
+function dtChName(){ return dtChannel==='offline' ? 'Offline' : 'Online'; }
+function dtFillPlatforms(keep){
+  var sel = document.getElementById('dtPlatform');
+  sel.innerHTML = DT_PLATFORMS[dtChannel].map(function(x){ return '<option>'+x+'</option>'; }).join('');
+  if(keep && DT_PLATFORMS[dtChannel].indexOf(keep)>=0) sel.value = keep;
+}
+function dtSetChannel(ch){
+  dtChannel = ch;
+  try{ localStorage.setItem(DT_CH_KEY, ch); }catch(e){}
+  document.querySelectorAll('.dt-ch').forEach(function(b){ b.classList.toggle('on', b.dataset.ch===ch); });
+  dtFillPlatforms();
+  dtPlatformChange();
+  dtRender();
+}
+
+function dtNewRow(){ return {items:[], mode:'price', val:'', gift:null, ed:{}}; }
+function dtNewSet(title, n){ return {title:title, n:n||2, rows:[dtNewRow()]}; }
+function dtLoadSets(){
+  try{
+    var s = JSON.parse(localStorage.getItem(DT_SETS_KEY)||'null');
+    if(s && s.length){
+      return s.map(function(x){
+        return {title:x.title, n:Math.min(DT_MAXN, Math.max(1, x.n||2)), rows:(x.rows||[]).map(function(r){
+          var items = r.items ? r.items.slice() : [r.a1||null, r.a2||null];     // older saves had a1 / a2
+          return {items:items, mode:r.mode||'price', val:(r.val==null?'':r.val), gift:r.gift||null, ed:{}};
+        })};
+      }).map(function(x){ if(x.rows.length===0) x.rows.push(dtNewRow()); return x; });
+    }
+  }catch(e){}
+  return [dtNewSet('Set 1', 2)];
+}
+function dtSaveSets(){
+  try{
+    localStorage.setItem(DT_SETS_KEY, JSON.stringify(dtSets.map(function(s){
+      return {title:s.title, n:s.n, rows:s.rows.map(function(r){ return {items:r.items, mode:r.mode, val:r.val, gift:r.gift}; })};
+    })));
+  }catch(e){}
+}
+
+// ── global settings: platform / Fee / Voucher ──
+function dtLoadSettings(){ try{ return JSON.parse(localStorage.getItem(DT_KEY)||'{}'); }catch(e){ return {}; } }
+function dtSaveSettings(){
+  var all = dtLoadSettings();
+  all[document.getElementById('dtPlatform').value] = {
+    fee: document.getElementById('dtFee').value, feeUnit: dtUnits.fee,
+    voucher: document.getElementById('dtVoucher').value, voucherUnit: dtUnits.voucher
+  };
+  try{ localStorage.setItem(DT_KEY, JSON.stringify(all)); }catch(e){}
+}
+function dtApplyUnits(){
+  document.querySelectorAll('.dt-unit').forEach(function(b){ b.classList.toggle('on', dtUnits[b.dataset.for]===b.dataset.unit); });
+}
+function dtPlatformChange(){
+  var s = dtLoadSettings()[document.getElementById('dtPlatform').value];
+  document.getElementById('dtFee').value = s ? s.fee : 0;
+  document.getElementById('dtVoucher').value = s ? s.voucher : 0;
+  dtUnits.fee = s ? s.feeUnit : 'pct';
+  dtUnits.voucher = s ? s.voucherUnit : 'baht';
+  dtApplyUnits();
+  dtCalcAll();
+}
+function dtSetUnit(which, unit){ dtUnits[which] = unit; dtApplyUnits(); dtSaveSettings(); dtCalcAll(); }
+function dtNum(id){ var v = parseFloat(document.getElementById(id).value); return isNaN(v) ? 0 : Math.max(0, v); }
+
+// ── helpers ──
+function dtProd(a){ return a ? PRODUCTS_BY_ARTICLE[String(a).toUpperCase()] : null; }
+function dtLabel(p){ return noteTitle(p.name, true) + ' // ' + (p.color||'') + ' // ' + p.article; }   // "Pocket S // OUTBACK // SSTW014KOUTS"
+function dt2(n){ return fmt1(n); }
+function dtPct2(n){ return (Math.round(n*100)/100).toFixed(2)+'%'; }
+
+// ── product picker (floating list, so a scrolling table can't clip it) ──
+// k = item position 0..n-1, or -1 for the free-gift picker
+function dtHideFloat(){ var b = document.getElementById('dtFloat'); if(b) b.style.display = 'none'; }
+function dtSearch(si, ri, k, inp){
+  var q = (inp.value||'').toLowerCase().trim();
+  var box = document.getElementById('dtFloat');
+  if(!q){ dtHideFloat(); return; }
+  var m = PRODUCTS.filter(function(p){
+    return p.name.toLowerCase().includes(q) || (p.color||'').toLowerCase().includes(q) || (p.article||'').toLowerCase().includes(q);
+  }).slice(0, 8);
+  if(m.length===0){ box.innerHTML = '<div class="dt-opt" style="color:#94a3b8;cursor:default">ไม่พบสินค้า</div>'; }
+  else box.innerHTML = m.map(function(p){
+    var pr = dtPrice(p);
+    return '<div class="dt-opt" onmousedown="dtPick('+si+','+ri+','+k+',\''+p.article+'\')">'+
+      '<div style="font-weight:600;color:#1e293b">'+escapeHtml(dtLabel(p))+'</div>'+
+      '<div style="color:#0d9488">'+(pr!=null ? dt2(pr)+' ฿' : '<span style="color:#dc2626">ไม่มีราคา '+dtChName()+'</span>')+' (Cost '+dt2(p.cost)+')</div></div>';
+  }).join('');
+  var rc = inp.getBoundingClientRect();
+  box.style.left = Math.min(rc.left, window.innerWidth-380)+'px'; box.style.top = (rc.bottom+2)+'px';
+  box.style.width = Math.max(rc.width, 360)+'px';
+  box.style.display = 'block';
+}
+window.addEventListener('scroll', function(e){ if(e.target && e.target.id==='dtFloat') return; dtHideFloat(); }, true);
+
+// ── state edits ──
+function dtPick(si, ri, k, article){
+  var r = dtSets[si].rows[ri];
+  if(k<0) r.gift = article; else { while(r.items.length<=k) r.items.push(null); r.items[k] = article; }
+  r.ed[k] = false; dtHideFloat(); dtRender();
+}
+function dtEdit(si, ri, k){
+  dtSets[si].rows[ri].ed[k] = true; dtRender();
+  var el = document.getElementById('dts-'+si+'-'+ri+'-'+(k<0?'g':k)); if(el) el.focus();
+}
+function dtClearGift(si, ri){ dtSets[si].rows[ri].gift = null; dtRender(); }
+function dtRowMode(si, ri, v){ dtSets[si].rows[ri].mode = v; dtRender(); }
+function dtRowVal(si, ri, v){ dtSets[si].rows[ri].val = v; dtFill(si, ri); dtSaveSets(); }
+function dtSetTitle(si, v){ dtSets[si].title = v; dtSaveSets(); }
+function dtSetN(si, v){ dtSets[si].n = Math.min(DT_MAXN, Math.max(1, parseInt(v,10)||2)); dtRender(); }   // extra picked items stay saved, just hidden
+function dtAddRow(si){ dtSets[si].rows.push(dtNewRow()); dtRender(); }
+function dtDelRow(si, ri){ dtSets[si].rows.splice(ri,1); if(dtSets[si].rows.length===0) dtSets[si].rows.push(dtNewRow()); dtRender(); }
+function dtAddSet(){ dtSets.push(dtNewSet('Set '+(dtSets.length+1), 2)); dtRender(); }
+function dtDelSet(si){
+  if(!confirm('ลบ "'+dtSets[si].title+'" ทั้ง Set?')) return;
+  dtSets.splice(si,1); if(dtSets.length===0) dtSets.push(dtNewSet('Set 1', 2)); dtRender();
+}
+
+// ── calculation for one row ──
+function dtComputeRow(r, n){
+  var prods = [], retail = 0, cost = 0;
+  for(var k=0;k<n;k++){
+    var p = dtProd(r.items[k]);
+    var pr = (p && dtPrice(p)!=null) ? dtPrice(p) : 0;
+    prods.push({p:p, pr:pr});
+    retail += pr; cost += p ? p.cost : 0;
+  }
+  var g = dtProd(r.gift);
+  var gv = (g && dtPrice(g)!=null) ? dtPrice(g) : 0, gc = g ? g.cost : 0;
+  var o = {items:prods, g:g, gv:gv, gc:gc, retail:retail, cost:cost, ready:false};
+  var val = parseFloat(r.val);
+  var needVal = r.mode!=='none';
+  if(retail<=0 || (needVal && isNaN(val))) return o;
+  var vIn = dtNum('dtVoucher'), fIn = dtNum('dtFee');
+  if(r.mode==='pct')       o.setPrice = retail*(1-Math.min(100,Math.max(0,val))/100);
+  else if(r.mode==='baht') o.setPrice = Math.max(0, retail-Math.max(0,val));
+  else if(r.mode==='price')o.setPrice = Math.max(0, val);
+  else                     o.setPrice = retail;
+  o.value = retail + gv;                       // V: everything the customer receives, at tag price
+  o.add = (retail - o.setPrice) + gv;          // ส่วนลดเพิ่มเติม: set discount + gift value
+  o.addPct = o.add/o.value*100;
+  o.voucher = Math.min(o.setPrice, dtUnits.voucher==='pct' ? o.setPrice*vIn/100 : vIn);
+  o.net = o.setPrice - o.voucher;
+  o.disc = (o.value - o.net)/o.value*100;
+  o.fee = dtUnits.fee==='pct' ? o.net*fIn/100 : fIn;
+  o.brand = o.net - o.fee;
+  o.bdisc = (o.value - o.brand)/o.value*100;
+  o.profit = o.brand - cost - gc;
+  o.ready = true;
+  return o;
+}
+
+function dtCell(id, html){ var el = document.getElementById(id); if(el) el.innerHTML = html; }
+function dtFill(si, ri){
+  var s = dtSets[si], r = s.rows[ri];
+  var o = dtComputeRow(r, s.n);
+  var id = function(f){ return 'dt-'+si+'-'+ri+'-'+f; };
+  var any = o.retail>0 || o.items.some(function(x){ return x.p; });
+  dtCell(id('tot'), any ? dt2(o.retail)+'<span class="dt-cost">Cost '+dt2(o.cost)+'</span>' : '—');
+  var dash = '—';
+  dtCell(id('add'), o.ready ? dt2(o.add)+'<span class="dt-cost">'+dtPct2(o.addPct)+' ของมูลค่า'+(o.gv>0 ? ' (ของแถม '+dt2(o.gv)+')' : '')+'</span>' : dash);
+  dtCell(id('net'),   o.ready ? dt2(o.net)   : dash);
+  dtCell(id('disc'),  o.ready ? dtPct2(o.disc) : dash);
+  dtCell(id('fee'),   o.ready ? dt2(o.fee)   : dash);
+  dtCell(id('brand'), o.ready ? dt2(o.brand) : dash);
+  dtCell(id('bdisc'), o.ready ? dtPct2(o.bdisc) : dash);
+  dtCell(id('profit'),o.ready ? '<span style="color:'+(o.profit<0?'#dc2626':'#16a34a')+'">'+dt2(o.profit)+'</span>' : dash);
+}
+function dtCalcAll(){ dtSets.forEach(function(s,si){ s.rows.forEach(function(r,ri){ dtFill(si,ri); }); }); }
+
+// ── rendering ──
+function dtPriceLine(p){
+  if(!p) return '';
+  return '<span class="dt-pr">'+(dtPrice(p)!=null ? dt2(dtPrice(p))+' ฿' : '<span style="color:#dc2626">ไม่มีราคา '+dtChName()+'</span>')+'<span class="dt-cost" style="display:inline"> &nbsp;Cost '+dt2(p.cost)+'</span></span>';
+}
+function dtItemCell(si, ri, k, r){
+  var p = dtProd(k<0 ? r.gift : r.items[k]);
+  if(p && !r.ed[k]){
+    return '<div class="dt-chosen" title="คลิกเพื่อเปลี่ยนสินค้า" onclick="dtEdit('+si+','+ri+','+k+')">'+escapeHtml(dtLabel(p))+'</div>'+dtPriceLine(p)+
+      (k<0 ? '<button class="del-btn" style="font-size:11px" title="เอาของแถมออก" onclick="dtClearGift('+si+','+ri+')">&#215; เอาออก</button>' : '');
+  }
+  return '<input type="text" class="dt-search" id="dts-'+si+'-'+ri+'-'+(k<0?'g':k)+'" autocomplete="off" '+
+    'placeholder="'+(k<0 ? '&#127873; แถม (ไม่ใส่ก็ได้)' : 'สินค้า '+(k+1)+' — พิมพ์รหัส / ชื่อ')+'" '+
+    'oninput="dtSearch('+si+','+ri+','+k+',this)" onfocus="dtSearch('+si+','+ri+','+k+',this)" onblur="setTimeout(dtHideFloat,150)">';
+}
+function dtRowHtml(si, ri, r, n){
+  var id = function(f){ return 'dt-'+si+'-'+ri+'-'+f; };
+  var modes = [['price','One Price ฿ (ทั้งเซ็ท)'],['pct','Bundle % (ลด % จากรวม)'],['baht','ลดเป็น ฿ (จากรวม)'],['none','ไม่ลด (ใช้กับของแถม)']];
+  var h = '<tr><td class="n" style="width:30px;color:#94a3b8;text-align:center">'+(ri+1)+'</td>';
+  for(var k=0;k<n;k++) h += '<td class="item">'+dtItemCell(si,ri,k,r)+'</td>';
+  h += '<td class="n y" id="'+id('tot')+'">—</td>'+
+    '<td class="item gift">'+dtItemCell(si,ri,-1,r)+'</td>'+
+    '<td style="white-space:nowrap"><select onchange="dtRowMode('+si+','+ri+',this.value)" style="padding:3px 4px">'+
+      modes.map(function(m){ return '<option value="'+m[0]+'"'+(r.mode===m[0]?' selected':'')+'>'+m[1]+'</option>'; }).join('')+'</select> '+
+      (r.mode==='none' ? '' : '<input class="dt-val" type="number" min="0" step="1" value="'+escapeAttr(r.val)+'" placeholder="'+(r.mode==='pct'?'% ลด':(r.mode==='baht'?'฿ ที่ลด':'ราคา'))+'" oninput="dtRowVal('+si+','+ri+',this.value)">')+'</td>'+
+    '<td class="n" id="'+id('add')+'">—</td>'+
+    '<td class="n g" id="'+id('net')+'">—</td>'+
+    '<td class="n" id="'+id('disc')+'">—</td>'+
+    '<td class="n" id="'+id('fee')+'">—</td>'+
+    '<td class="n" id="'+id('brand')+'">—</td>'+
+    '<td class="n o" id="'+id('bdisc')+'">—</td>'+
+    '<td class="n" id="'+id('profit')+'">—</td>'+
+    '<td style="width:30px;text-align:center"><button class="del-btn" title="ลบแถว" onclick="dtDelRow('+si+','+ri+')">&#215;</button></td>'+
+    '</tr>';
+  return h;
+}
+function dtRender(){
+  var wrap = document.getElementById('dtSets');
+  if(!wrap) return;
+  var html = '';
+  dtSets.forEach(function(s, si){
+    var n = s.n;
+    var nOpts = ''; for(var q=1;q<=DT_MAXN;q++) nOpts += '<option value="'+q+'"'+(q===n?' selected':'')+'>'+q+' ชิ้น</option>';
+    var th = '<th>#</th>';
+    for(var k=0;k<n;k++) th += '<th>สินค้า '+(k+1)+'<small>ราคาป้าย '+dtChName()+' (Cost)</small></th>';
+    th += '<th>Total Price<small>รวมราคาป้าย</small></th><th>&#127873; แถม<small>มูลค่า = ราคาป้าย</small></th>'+
+      '<th>ราคาขายเซ็ท<small>One Price / Bundle % / ลด ฿</small></th><th>ส่วนลดเพิ่มเติม<small>ลูกค้าได้ (ลดเซ็ท + ของแถม)</small></th>'+
+      '<th>Net<small>ลูกค้าจ่าย</small></th><th>ส่วนลดลูกค้า<small>รวมทั้งหมด</small></th>'+
+      '<th>Fee ฿</th><th>แบรนด์ได้รับ</th><th>ส่วนลดที่แบรนด์รับ</th><th>กำไร ฿</th><th></th>';
+    html += '<div class="card dt-set">'+
+      '<div class="dt-set-head">'+
+        '<input class="dt-title" value="'+escapeAttr(s.title)+'" oninput="dtSetTitle('+si+',this.value)" title="แก้ชื่อ Set ได้">'+
+        '<label style="font-size:12px;font-weight:700;color:#713f12">เซ็ทละ <select class="dt-nsel" onchange="dtSetN('+si+',this.value)">'+nOpts+'</select></label>'+
+        '<span style="margin-left:auto;display:flex;gap:6px">'+
+          '<button onclick="dtCopySet('+si+')" style="padding:4px 10px;background:#fff;border:1px solid #a16207;border-radius:6px;font-size:11px;font-weight:600;color:#713f12">&#128203; คัดลอก (วางใน Excel)</button>'+
+          '<button onclick="dtDelSet('+si+')" style="padding:4px 10px;background:#fee2e2;border:1px solid #fca5a5;border-radius:6px;font-size:11px;color:#dc2626">ลบ Set</button>'+
+        '</span></div>'+
+      '<div class="dt-scroll"><table class="dt-grid" style="min-width:'+(900+n*185)+'px"><thead><tr>'+th+'</tr></thead><tbody>';
+    s.rows.forEach(function(r, ri){ html += dtRowHtml(si, ri, r, n); });
+    html += '</tbody></table></div>'+
+      '<div style="padding:8px 12px"><button onclick="dtAddRow('+si+')" style="padding:5px 14px;background:#f0fdfa;border:1.5px solid #0d9488;color:#0d9488;border-radius:8px;font-size:12px;font-weight:700">+ เพิ่มแถว</button></div>'+
+      '</div>';
+  });
+  wrap.innerHTML = html;
+  dtCalcAll();
+  dtSaveSets();
+}
+
+// ── copy a Set as tab-separated text (paste straight into Excel) ──
+function dtCopySet(si){
+  var s = dtSets[si], n = s.n, platform = dtChName()+' / '+document.getElementById('dtPlatform').value;
+  var fIn = dtNum('dtFee'), vIn = dtNum('dtVoucher');
+  var lines = [s.title+'\t['+platform+']\tFee '+(dtUnits.fee==='pct' ? fIn+'%' : '฿'+fIn)+'\tVoucher '+(dtUnits.voucher==='pct' ? vIn+'%' : '฿'+vIn)];
+  var hd = [];
+  for(var k=0;k<n;k++){ hd.push('สินค้า '+(k+1)); hd.push('Price'); }
+  hd = hd.concat(['Total Price','ของแถม','มูลค่าของแถม','ราคาขายเซ็ท','ส่วนลดเพิ่มเติม ฿','ส่วนลดเพิ่มเติม %','Net','ส่วนลดลูกค้า','Fee','แบรนด์ได้รับ','ส่วนลดที่แบรนด์รับ','กำไร']);
+  lines.push(hd.join('\t'));
+  s.rows.forEach(function(r){
+    var o = dtComputeRow(r, n);
+    if(!o.items.some(function(x){ return x.p; })) return;
+    var c = [];
+    o.items.forEach(function(x){ c.push(x.p ? dtLabel(x.p) : ''); c.push(x.p ? dt2(x.pr) : ''); });
+    var lbl = r.mode==='pct' ? 'Bundle '+r.val+'% = ' : r.mode==='baht' ? 'ลด '+r.val+' = ' : r.mode==='none' ? 'ราคาปกติ ' : 'One Price ';
+    c.push(dt2(o.retail), o.g ? dtLabel(o.g) : '', o.g ? dt2(o.gv) : '',
+      o.ready ? lbl+dt2(o.setPrice) : '', o.ready ? dt2(o.add) : '', o.ready ? dtPct2(o.addPct) : '',
+      o.ready ? dt2(o.net) : '', o.ready ? dtPct2(o.disc) : '', o.ready ? dt2(o.fee) : '', o.ready ? dt2(o.brand) : '',
+      o.ready ? dtPct2(o.bdisc) : '', o.ready ? dt2(o.profit) : '');
+    lines.push(c.join('\t'));
+  });
+  var text = lines.join('\n');
+  function done(){ alert('✅ คัดลอก "'+s.title+'" แล้ว — วางลง Excel ได้เลย'); }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(function(){ fallbackCopy(text); done(); });
+  } else { fallbackCopy(text); done(); }
+}
+
+function dtInit(){
+  dtSets = dtLoadSets();
+  try{ if(localStorage.getItem(DT_CH_KEY)==='offline') dtChannel = 'offline'; }catch(e){}
+  document.querySelectorAll('.dt-ch').forEach(function(b){ b.classList.toggle('on', b.dataset.ch===dtChannel); });
+  dtFillPlatforms();
+  dtPlatformChange();   // restores Fee/Voucher for the platform and recalculates
+  dtRender();
+}
+
 // ── Init ──────────────────────────────────────────────
 buildFilterChips();
 rebuildProductIndex();
 render();
+dtInit();
 
 </script>
 </body>

@@ -1,6 +1,6 @@
 # Sea to Summit Promo Planner
 
-Local-first promotion planning + stock-check tool for Sea to Summit (Thailand), built from the `Catalog update` sheet of the brand's product catalog. Two tabs in the sidebar:
+Local-first promotion planning + stock-check tool for Sea to Summit (Thailand), built from the `Catalog update` sheet of the brand's product catalog. Three tabs in the sidebar:
 
 ## 🏷️ Promo Planner
 
@@ -18,6 +18,15 @@ Local-first promotion planning + stock-check tool for Sea to Summit (Thailand), 
 ## 📦 Merchandise Planner
 
 Paste any text — a Note, a SKU list, or just product names. It finds real catalog **article codes and product names** (name + colour + size) in the text, so codes don't have to be removed. Pick the stock source: **Stock All**, **SDC1 (FG)**, **Branch** (Stock All − SDC1) or **FGOL (Online)**. Products can be linked by **name + colour + size** (stock summed across every article code of the same product, with per-code stock shown) or by the pasted article codes only. Set an overall sales target to see the shortfall, and copy the result (Article / Name+Colour+Size / Stock) as a tab-separated list for Excel.
+
+## 🧮 Discount Table (ตารางส่วนลด)
+
+A spreadsheet-style quick calculator: one row = one deal, grouped in named Sets.
+
+- Pick the channel — **Online** (Online Price) or **Offline** (shelf Price) — and a platform / mall; set **Fee** and **Voucher** each as % or ฿ (remembered per platform).
+- Each Set decides how many items a deal has (**1–10**). Pick catalog products (price and real Cost shown), then price the set as **One Price ฿**, **Bundle %**, **ลดเป็น ฿**, or no discount — and optionally add a **🎁 free gift** from the catalog.
+- Results per row: customer discount, **additional discount the customer receives** (set discount + gift value), Net (customer pays), Fee on Net, what the brand receives, the discount the brand bears, and profit after product + gift Cost.
+- Copy any Set as tab-separated text to paste into Excel.
 
 Open `index.html` directly in a browser, or via GitHub Pages.
 
